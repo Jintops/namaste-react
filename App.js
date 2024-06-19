@@ -64,7 +64,8 @@ const RestaurantCard =() =>{
 const Body = ()=>{
     return(
         <div className="body">
-            <div className="search">search
+            <div className="search">
+                search
          </div>
         <div className="res-container">
          <RestaurantCard/>
