@@ -19,4 +19,8 @@
      export const Component;
      import {Component} from "path";
 
+# React Hooks
+ (Normal JS utility functions)
+ -useStates() -superpowerful state variable in react
+ -useEffect()
    
