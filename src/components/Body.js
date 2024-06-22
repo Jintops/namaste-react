@@ -5,8 +5,15 @@ import Shimmer from "./Shimmer";
 
 
  const Body = ()=>{
+    
 
-    const [listOfRestaurants,setListOfRestaurants] = useState([])
+    const [listOfRestaurants,setListOfRestaurants] = useState([]);
+    const [filteredRestaurant,setFilteredRestaurant]=useState([]);
+
+
+    const [searchText, setSearchText]=useState("");
+
+    console.log("body rendered")
 
    useEffect(()=>{
     fetchData();
@@ -16,30 +23,45 @@ import Shimmer from "./Shimmer";
     const data =await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=11.86530&lng=75.35200&collection=83639&tags=layout_CCS_Biryani&sortBy=&filters=&type=rcv2&offset=0&page_type=null")
 
    const json =await data.json();
-   console.log(json)
+   console.log(json);
    setListOfRestaurants(json?.data?.cards);
+   setFilteredRestaurant(json?.data?.cards);
     console.log(listOfRestaurants);
    };
    
    //conditional Rendering
 
-   if(listOfRestaurants?.length===0){
-    return <Shimmer></Shimmer>
-   }
-    
     return listOfRestaurants?.length===0 ? <Shimmer/ > : (
         <div className="body">
             <div className="filter">
+                <div className="search">
+                <input type="text" className="search-box" value={searchText} onChange={(e)=>{
+                    setSearchText(e.target.value);
+                }}></input>
+                <button onClick={()=>{
+                  const filteredRestaurant=  listOfRestaurants.filter((res)=>
+                        res?.card?.card?.info?.name?.toLowerCase().includes(searchText.toLowerCase())
+                    );
+                   setFilteredRestaurant(filteredRestaurant);
+                    console.log(searchText)
+                }}>Search</button>
+
+                </div>
+
+
+
                <button className="filter-btn" onClick={()=>{
                const fileredList=listOfRestaurants.filter((res)=>
                 res.card?.card?.info?.avgRating>4.2
                )
-               setListOfRestaurants(fileredList); 
+             setFilteredRestaurant(fileredList); 
                }}>Top rated restaurant</button>
          </div>
+
+
         <div className="res-container">
      {
-        listOfRestaurants.map((restaurant)=>(
+        filteredRestaurant.map((restaurant)=>(
             restaurant.card?.card?.info?
             <RestaurantCard key={restaurant.card?.card?.info?.id} resData={restaurant}/>:''
         ))

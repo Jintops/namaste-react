@@ -20,7 +20,7 @@ const Header = ()=>{
                     <li>Cart🛒</li>
                     <button className="login" onClick={()=>{
                        btnNameReact==="Login" ? setBtnNameReact("Logout") : setBtnNameReact("Login");
-                       console.log(btnNameReact)
+                     
                     }
               
                     }>{btnNameReact}✅</button>
