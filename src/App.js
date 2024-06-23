@@ -2,47 +2,50 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import Header from "./components/Header";
 import Body from "./components/Body";
+import About from "./components/About";
+import Contact from "./components/Contact";
+import Error from "./components/Error";
+import RestaurantMenu from "./components/RestaurantMenu";
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 
 
-// react
-// const heading = React.createElement(
-//     "h1",
-//     {id:"heading"},
-//     "hello from react🚀"
-// );
-
-
-
-// const heading =(
-// <h1 className="head" tabIndex="5">
-//     hello its jsx🚀
-//     </h1>
-    
-// );
-//React Functional Components
-
-// const HeadingComponent =() =>(
-//     <div id="container">
-//         {heading }
-//         <h1 className="heading">its react functional component</h1>
-//     </div>
-    
-// )
-
-
-
-
-
-
-
-const AppLayout = ()=>{
-    return(
+const AppLayout = () => {
+    return (
         <div className="app">
-         <Header/>
-         <Body/>
+            <Header />
+            <Outlet />
         </div>
     )
 }
 
+const appRouter = createBrowserRouter([
+    {
+        path: "/",
+        element: <AppLayout />,
+
+        children: [
+            {
+                path: "/",
+                element: <Body />
+            },
+            {
+                path: "/about",
+                element: <About />
+            }, 
+            {
+                path: "/restaurants/:resId",
+                element: <RestaurantMenu />
+            }
+
+        ],
+        errorElement: <Error />
+    },
+    {
+        path: "/contact",
+        element: <Contact />
+    }
+
+])
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<AppLayout />);
+root.render(<RouterProvider router={appRouter} />);

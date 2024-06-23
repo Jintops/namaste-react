@@ -9,8 +9,6 @@ import Shimmer from "./Shimmer";
 
     const [listOfRestaurants,setListOfRestaurants] = useState([]);
     const [filteredRestaurant,setFilteredRestaurant]=useState([]);
-
-
     const [searchText, setSearchText]=useState("");
 
     console.log("body rendered")
@@ -20,13 +18,13 @@ import Shimmer from "./Shimmer";
    },[]);
 
    const fetchData = async ()=>{
-    const data =await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=11.86530&lng=75.35200&collection=83639&tags=layout_CCS_Biryani&sortBy=&filters=&type=rcv2&offset=0&page_type=null")
-
+ const data =await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=11.86530&lng=75.35200&collection=83639&tags=layout_CCS_Biryani&sortBy=&filters=&type=rcv2&offset=0&page_type=null")
+ 
    const json =await data.json();
    console.log(json);
    setListOfRestaurants(json?.data?.cards);
    setFilteredRestaurant(json?.data?.cards);
-    console.log(listOfRestaurants);
+    
    };
    
    //conditional Rendering
@@ -34,13 +32,16 @@ import Shimmer from "./Shimmer";
     return listOfRestaurants?.length===0 ? <Shimmer/ > : (
         <div className="body">
             <div className="filter">
+              
+              {/* search restaurant */}
+
                 <div className="search">
                 <input type="text" className="search-box" value={searchText} onChange={(e)=>{
                     setSearchText(e.target.value);
                 }}></input>
                 <button onClick={()=>{
                   const filteredRestaurant=  listOfRestaurants.filter((res)=>
-                        res?.card?.card?.info?.name?.toLowerCase().includes(searchText.toLowerCase())
+                        res?.card?.card?.info?.name?.toLowerCase()?.includes(searchText?.toLowerCase())
                     );
                    setFilteredRestaurant(filteredRestaurant);
                     console.log(searchText)
@@ -49,6 +50,7 @@ import Shimmer from "./Shimmer";
                 </div>
 
 
+         {/* top rated restaurant */}
 
                <button className="filter-btn" onClick={()=>{
                const fileredList=listOfRestaurants.filter((res)=>
