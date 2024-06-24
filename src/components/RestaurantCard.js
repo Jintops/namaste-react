@@ -6,7 +6,7 @@ const RestaurantCard =(props) =>{
   
     // let k = resData;
     // const {cloudinaryImageId,name,cuisines,avgRating,costForTwo,deliveryTime}=resData.info
-    const {cloudinaryImageId,name,cuisines,avgRating,costForTwo,deliveryTime}= resData?.card?.card?.info;
+    const {cloudinaryImageId,name,cuisines,avgRating,costForTwo,deliveryTime}= resData?.card?.card?.info ;
     // const name = resData?.card?.card?.info?.name
     // const cuisines = resData?.card?.card?.info?.cuisines
     // const avgRating = resData?.card?.card?.info?.avgRating
@@ -21,8 +21,7 @@ const RestaurantCard =(props) =>{
          <h4>{cuisines.join(",")}</h4>
          <h4>{avgRating}</h4>
          <h4>{costForTwo}</h4>
-        <h4>{deliveryTime} minutes</h4>
-       
+        <h4>{deliveryTime} minutes</h4>     
         </div>
     )
 }

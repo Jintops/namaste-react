@@ -17,20 +17,23 @@
 .nav-items > ul {
     display: flex;
     list-style-type: none;
+ 
 }
 
 .nav-items > ul >li{
     padding: 10px;
     margin: 10px;
+    
 }
 
 .res-card{
     margin: 4px;
     padding: 3px;
-    width: 200px;
-   
-   
+    width: 200px;  
+  
 }
+
+
 .res-card:hover{
     border: 1px solid black;
     cursor: pointer;

@@ -2,6 +2,8 @@ import RestaurantCard from "./RestaurantCard";
 import resList from "../utils/mockData";
 import { useState ,useEffect } from "react";
 import Shimmer from "./Shimmer";
+import { Link } from "react-router-dom";
+import { MENU_API } from "../utils/constants";
 
 
  const Body = ()=>{
@@ -18,7 +20,7 @@ import Shimmer from "./Shimmer";
    },[]);
 
    const fetchData = async ()=>{
- const data =await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=11.86530&lng=75.35200&collection=83639&tags=layout_CCS_Biryani&sortBy=&filters=&type=rcv2&offset=0&page_type=null")
+ const data =await fetch(MENU_API)
  
    const json =await data.json();
    console.log(json);
@@ -65,7 +67,7 @@ import Shimmer from "./Shimmer";
      {
         filteredRestaurant.map((restaurant)=>(
             restaurant.card?.card?.info?
-            <RestaurantCard key={restaurant.card?.card?.info?.id} resData={restaurant}/>:''
+           <Link key={restaurant.card?.card?.info?.id} to={"/restaurants/"+restaurant.card?.card?.info?.id}> <RestaurantCard  resData={restaurant}/></Link>:''
         ))
      }
         </div> 
