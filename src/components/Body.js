@@ -20,7 +20,7 @@ import { MENU_API } from "../utils/constants";
    },[]);
 
    const fetchData = async ()=>{
- const data =await fetch(MENU_API)
+ const data =await fetch(MENU_API )
  
    const json =await data.json();
    console.log(json);

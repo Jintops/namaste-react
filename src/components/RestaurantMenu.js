@@ -20,12 +20,12 @@ const RestaurantMenu = () => {
         const data = await fetch(MENU_API)
 
         const json = await data.json();
-        console.log("josn.data.cards", json.data.cards)
+        // console.log("josn.data.cards", json.data.cards)
 
         {
             json.data.cards.map((card) => {
                 let data = card?.card?.card?.info;
-                console.log('data : ', data);
+                // console.log('data : ', data);
                 if (data?.id === resId) {
 
                     setResInfo(data);
@@ -34,7 +34,7 @@ const RestaurantMenu = () => {
                 }
             });
 
-            //    setResInfo(json.data.cards[)
+            //    setResInfo(json.data.cards)
             // console.log("resinfo", resInfo)
         }
     };
