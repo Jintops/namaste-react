@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { MENU_API } from "./constants";
+import { MENUU_API} from "./constants";
 
 
 const useRestaurantMenu=(resId)=>{ 
@@ -11,23 +11,24 @@ const useRestaurantMenu=(resId)=>{
       },[]);
 
       const fetchMenu =async ()=>{
-        const data=await fetch(MENU_API);
+        const data=await fetch(MENUU_API+resId);
         const json=await data.json();
+        console.log(json)
       
-        setResInfo(json)
+        setResInfo(json.data)
        
-      {
-        json.data.cards.map((card) => {
-             let data = card?.card?.card?.info;
+    //   {
+    //     json.data.cards.map((card) => {
+    //          let data = card?.card?.card?.info;
             
-             if (data?.id === resId) {
+    //          if (data?.id === resId) {
 
-                 setResInfo(data);
+    //              setResInfo(data);
                 
-             }
-         });
+    //          }
+    //      });
 
-     }
+    //  }
     }
     
      return resInfo;

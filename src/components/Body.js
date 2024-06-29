@@ -3,8 +3,9 @@ import resList from "../utils/mockData";
 import { useState ,useEffect } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
-import { MENU_API } from "../utils/constants";
+import { MENU_API,RES_API } from "../utils/constants";
 import useOnlineStatus from "../utils/useOnlineStatus";
+
 
 
  const Body = ()=>{
@@ -21,12 +22,14 @@ import useOnlineStatus from "../utils/useOnlineStatus";
    },[]);
 
    const fetchData = async ()=>{
- const data =await fetch(MENU_API )
+ const data =await fetch(RES_API)
  
    const json =await data.json();
-   console.log(json);
-   setListOfRestaurants(json?.data?.cards);
-   setFilteredRestaurant(json?.data?.cards);
+  //  console.log(json)
+   console.log(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+   setListOfRestaurants(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+   
+   setFilteredRestaurant(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
     
    };
 
@@ -35,43 +38,43 @@ import useOnlineStatus from "../utils/useOnlineStatus";
    
    //conditional Rendering
 
-    return listOfRestaurants?.length===0 ? <Shimmer/ > : (
+    return listOfRestaurants?.length===0 ? <Shimmer /> : (
         <div className="body">
-            <div className="filter">
+            <div className="flex">
               
               {/* search restaurant */}
 
-                <div className="search">
-                <input type="text" className="search-box" value={searchText} onChange={(e)=>{
+                <div className=" ml-2  mt-4 p-2">
+                <input type="text" className="border border-solid border-black" value={searchText} onChange={(e)=>{
                     setSearchText(e.target.value);
                 }}></input>
-                <button onClick={()=>{
+                <button className="px-4 py-2 bg-amber-100 border border-green-300 m-4 rounded-xl text-lg text-opacity-100" onClick={()=>{
                   const filteredRestaurant=  listOfRestaurants.filter((res)=>
-                        res?.card?.card?.info?.name?.toLowerCase()?.includes(searchText?.toLowerCase())
+                        res?.info?.name?.toLowerCase()?.includes(searchText?.toLowerCase())
                     );
                    setFilteredRestaurant(filteredRestaurant);
                     console.log(searchText)
                 }}>Search</button>
 
                 </div>
-
-
+                
          {/* top rated restaurant */}
-
-               <button className="filter-btn" onClick={()=>{
+             <div className=" mt-4 p-4 flex items-center text-lg text-opacity-100">
+               <button className="p-3 bg-orange-100 rounded-lg font-serif border border-blue-400 border-solid" onClick={()=>{
                const fileredList=listOfRestaurants.filter((res)=>
-                res.card?.card?.info?.avgRating>4.2
+                res.info?.avgRating>4.3
                )
              setFilteredRestaurant(fileredList); 
                }}>Top rated restaurant</button>
+               </div>
          </div>
 
 
-        <div className="res-container">
+        <div className="flex flex-wrap ">
      {
         filteredRestaurant.map((restaurant)=>(
-            restaurant.card?.card?.info?
-           <Link key={restaurant.card?.card?.info?.id} to={"/restaurants/"+restaurant.card?.card?.info?.id}> <RestaurantCard  resData={restaurant}/></Link>:''
+            
+           <Link key={restaurant.info?.id} to={"/restaurants/"+restaurant.info?.id}> <RestaurantCard  resData={restaurant}/></Link>
         ))
      }
         </div> 
