@@ -5,7 +5,8 @@ import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import { MENU_API,RES_API } from "../utils/constants";
 import useOnlineStatus from "../utils/useOnlineStatus";
-
+import { useContext } from "react";
+import UserContext from "../utils/UserContext";
 
 
  const Body = ()=>{
@@ -15,7 +16,7 @@ import useOnlineStatus from "../utils/useOnlineStatus";
     const [filteredRestaurant,setFilteredRestaurant]=useState([]);
     const [searchText, setSearchText]=useState("");
 
-    console.log("body rendered")
+    // console.log("body rendered")
 
    useEffect(()=>{
     fetchData();
@@ -26,7 +27,7 @@ import useOnlineStatus from "../utils/useOnlineStatus";
  
    const json =await data.json();
   //  console.log(json)
-   console.log(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+  //  console.log(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
    setListOfRestaurants(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
    
    setFilteredRestaurant(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
@@ -36,6 +37,8 @@ import useOnlineStatus from "../utils/useOnlineStatus";
    const onlineStatus=useOnlineStatus();
    if(onlineStatus===false) return <h1>Looks like you are offline!! please check your internet connection</h1>
    
+
+   const {loggedInUser,setUserName}=useContext(UserContext)
    //conditional Rendering
 
     return listOfRestaurants?.length===0 ? <Shimmer /> : (
@@ -67,6 +70,14 @@ import useOnlineStatus from "../utils/useOnlineStatus";
              setFilteredRestaurant(fileredList); 
                }}>Top rated restaurant</button>
                </div>
+
+
+               <div className="m-4 p-4 flex items-center">
+                <label>User Name: </label>
+               <input className="border border-black p-4" value={loggedInUser} onChange={(e)=>setUserName(e.target.value)}></input>
+               </div>
+
+
          </div>
 
 

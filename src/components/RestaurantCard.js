@@ -1,7 +1,10 @@
+import UserContext from "../utils/UserContext";
 import { CDN_URL } from "../utils/constants";
+import { useContext } from "react";
 
 const RestaurantCard =(props) =>{
     
+    const {loggedInUser}=useContext(UserContext)
     const { resData}=props;
   
     // let k = resData;
@@ -21,7 +24,8 @@ const RestaurantCard =(props) =>{
          <h4>{cuisines.join(",")}</h4>
          <h4>{avgRating}</h4>
          <h4>{costForTwo}</h4>
-        <h4>{deliveryTime} minutes</h4>     
+        <h4>{deliveryTime} minutes</h4>    
+        <h4>user:{loggedInUser}</h4> 
         </div>
     )
 }
