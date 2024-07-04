@@ -40,3 +40,11 @@
 -js file into different bundles --different bundles are loaded only when needed
 -class components --different features of class components
 -creating hooks --create our own hooks
+
+# Redux Toolkit
+-Install @reduxjs/toolkit and react-redux
+-Build our store
+-Connect our store to our app
+-Slice (cartSlicd)
+-dispatch an action
+-selector
