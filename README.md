@@ -48,3 +48,20 @@
 -Slice (cartSlicd)
 -dispatch an action
 -selector
+
+# Types of testing (developer)
+-unit Testing
+-Integration Testing
+-End to End Testing - e2e testing
+
+# setting up Testing in our app
+-Install React Testing Library
+-Installed jest
+-Installed Babel dependencies
+-configure Babel
+-configure  parcel config file to disable default babel transpilation - parcel website ,babel
+-jest configuration - npx jest --init
+-Install jsdom Library - jest28
+-Install @babel/preset-react - to make jsx work in test cases
+-include @babel/preset -react inside my babel config
+-Install @testing-library/jest-dom
