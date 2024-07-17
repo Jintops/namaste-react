@@ -26,7 +26,7 @@ const AppLayout = () => {
         name:"jintoo",
      }
      setUserName(data.name)
-
+      
     },[])
 
     return (
@@ -67,7 +67,7 @@ const appRouter = createBrowserRouter([
             },
             {
                 path:"/cart",
-                element:<Cart/ >
+                element:<Cart />
             }
 
         ],
@@ -77,8 +77,9 @@ const appRouter = createBrowserRouter([
         path: "/contact",
         element: <Contact />
     }
-
 ])
+
+
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<RouterProvider router={appRouter} />);
