@@ -16,17 +16,26 @@ const RestaurantCard =({resData}) =>{
     // const costForTwo= resData?.card?.card?.info?.costForTwo
     // const deliveryTime= resData?.card?.card?.info?.deliveryTime
         return(
-        <div className="h-[400px] m-2 p-4 w-[230px] bg-gray-200 hover:bg-blue-200 hover:border border-black rounded-md ">
-            <img className="rounded-lg w-[200px] h-[180px]"
-             alt="res-logo"
-              src={CDN_URL+cloudinaryImageId}/>
-         <h3 className="font-bold py-3 text-lg">{name}</h3>
-         <h4>{cuisines.join(",")}</h4>
-         <h4>{avgRating}</h4>
-         <h4>{costForTwo}</h4>
-        <h4>{deliveryTime} minutes</h4>    
-       
-        </div>
+            <div className="h-[300px] w-[230px] bg-gray-100  my-3  rounded-md transform transition-transform duration-300 hover:scale-105 shadow-md shadow-gray-400">
+            <div>
+              <img
+                className="rounded-lg w-[230px] h-[160px]"
+                alt="res-logo"
+                src={CDN_URL + cloudinaryImageId}
+              />
+            </div>
+            <div className="mx-2">
+              <h3 className="font-bold text-lg">{name}</h3>
+              <h4>{cuisines.join("-")}</h4>
+              </div>
+               <div className="flex">
+              <h4 className="font-bold">⭐{avgRating}</h4>
+              <h4 className="mx-1 font-bold">- {costForTwo}</h4>
+              {/* <h4>{deliveryTime} minutes</h4> */}
+            </div>
+          </div>
+          
+          
     )
 }
 
