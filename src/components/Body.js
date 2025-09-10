@@ -1,97 +1,107 @@
-import RestaurantCard from "./RestaurantCard";
-import resList from "../utils/mockData";
-import { useState ,useEffect } from "react";
-import Shimmer from "./Shimmer";
+import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
-import { MENU_API,RES_API } from "../utils/constants";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+
+import RestaurantCard from "./RestaurantCard";
+import Shimmer from "./Shimmer";
+import { RES_API } from "../utils/constants";
 import useOnlineStatus from "../utils/useOnlineStatus";
-import { useContext } from "react";
 import UserContext from "../utils/UserContext";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
- const Body = ()=>{
-    
+const Body = () => {
+  const [listOfRestaurants, setListOfRestaurants] = useState([]);
+  const [filteredRestaurant, setFilteredRestaurant] = useState([]);
+  const [searchText, setSearchText] = useState("");
 
-    const [listOfRestaurants,setListOfRestaurants] = useState([]);
-    const [filteredRestaurant,setFilteredRestaurant]=useState([]);
-    const [searchText, setSearchText]=useState("");
-
-    // console.log("body rendered")
-
-   useEffect(()=>{
+  // Fetch data when component mounts
+  useEffect(() => {
     fetchData();
-   },[]);
+  }, []);
 
-   const fetchData = async ()=>{
- const data =await fetch(RES_API)
- 
-   const json =await data.json();
-  //  console.log(json)
-  //  console.log(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
-   setListOfRestaurants(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
-   
-   setFilteredRestaurant(json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
-    
-   };
+  const fetchData = async () => {
+    const data = await fetch(RES_API);
+    const json = await data.json();
 
-   const onlineStatus=useOnlineStatus();
-   if(onlineStatus===false) return <h1>Looks like you are offline!! please check your internet connection</h1>
-   
+    const restaurants =
+      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants ||
+      [];
 
-   const {loggedInUser,setUserName}=useContext(UserContext)
-   //conditional Rendering
+    setListOfRestaurants(restaurants);
+    setFilteredRestaurant(restaurants);
+  };
 
-    return listOfRestaurants?.length===0 ? <Shimmer /> : (
-        <div className="body">
-            <div className="grid grid-cols-12 ml-12">
-              
-              {/* search restaurant */}
+  // Handle offline status
+  const onlineStatus = useOnlineStatus();
+  if (!onlineStatus) {
+    return (
+      <h1 className="text-center mt-20 text-xl font-semibold text-red-600">
+        ⚠️ Looks like you are offline! Please check your internet connection.
+      </h1>
+    );
+  }
 
-                <div className="  mt-4   col-span-3">
-                <input type="text" className="border border-double border-black rounded-lg w-[300px] h-9  px-4 ml-16" value={searchText} onChange={(e)=>{
-                    setSearchText(e.target.value);
-                }}></input>
-                <button className="px-4 py-2 -mx-[50px] my-4 rounded-xl text-lg text-opacity-100" onClick={()=>{
-                  const filteredRestaurant=  listOfRestaurants.filter((res)=>
-                        res?.info?.name?.toLowerCase()?.includes(searchText?.toLowerCase())
-                    );
-                   setFilteredRestaurant(filteredRestaurant);
-                    console.log(searchText)
-                }}> <FontAwesomeIcon icon={faSearch} className="text-red-600 h-5 w-6 " /></button>
+  // Context (if you plan to use username later)
+  const { loggedInUser } = useContext(UserContext);
 
-                </div>
-                
-         {/* top rated restaurant */}
-             <div className=" mt-4 p-4 flex items-center text-lg text-opacity-100 col-span-4">
-               <button className="py-1 px-5 bg-red-600 rounded-lg font-serif border border-red-400 border-solid text-white" onClick={()=>{
-               const fileredList=listOfRestaurants.filter((res)=>
-                res.info?.avgRating>4.4
-               )
-             setFilteredRestaurant(fileredList); 
-               }}>Show Top Rated Restaurant⭐</button>
-               </div>
+  // Conditional rendering (shimmer while loading)
+  if (listOfRestaurants.length === 0) {
+    return <Shimmer />;
+  }
 
-
-               {/* <div className="m-4 p-4 flex items-center">
-                <label>User Name: </label>
-               <input className="border border-black p-4" value={loggedInUser} onChange={(e)=>setUserName(e.target.value)}></input>
-               </div> */}
-
-
-         </div>
-
-
-        <div className="mx-28 mt-6 grid grid-cols-5 mb-10 ">
-     {
-        filteredRestaurant.map((restaurant)=>(
-            
-          <div className=""> <Link key={restaurant.info?.id} to={"/restaurants/"+restaurant.info?.id}> <RestaurantCard  resData={restaurant}/></Link></div>
-        ))
-     }
-        </div> 
+  return (
+    <div className="body px-10 py-6">
+      {/* 🔍 Search + Filter Section */}
+      <div className="flex flex-col md:flex-row justify-between items-center mb-8">
+        {/* Search */}
+        <div className="flex items-center gap-2">
+          <input
+            type="text"
+            className="border border-gray-400 rounded-lg w-72 h-10 px-4 focus:outline-none focus:ring-2 focus:ring-red-500"
+            placeholder="Search restaurants..."
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
+          <button
+            className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
+            onClick={() => {
+              const filtered = listOfRestaurants.filter((res) =>
+                res?.info?.name?.toLowerCase().includes(searchText.toLowerCase())
+              );
+              setFilteredRestaurant(filtered);
+            }}
+          >
+            <FontAwesomeIcon icon={faSearch} />
+          </button>
         </div>
-    )
-}
+
+        {/* Top Rated Button */}
+        <button
+          className="mt-4 md:mt-0 bg-green-500 text-white py-2 px-6 rounded-lg hover:bg-green-600 transition"
+          onClick={() => {
+            const filtered = listOfRestaurants.filter(
+              (res) => res.info?.avgRating > 4.4
+            );
+            setFilteredRestaurant(filtered);
+          }}
+        >
+          Show Top Rated ⭐
+        </button>
+      </div>
+
+      {/* 🍴 Restaurant Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {filteredRestaurant.map((restaurant) => (
+          <Link
+            key={restaurant.info?.id}
+            to={"/restaurants/" + restaurant.info?.id}
+          >
+            <RestaurantCard resData={restaurant} />
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 export default Body;

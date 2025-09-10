@@ -1,52 +1,66 @@
-import { useState,useContext } from "react";
-import { LOGO_URL } from "../utils/constants";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import useOnlineStatus from "../utils/useOnlineStatus";
 import UserContext from "../utils/UserContext";
-import { useSelector } from "react-redux";
-import logo from "/src/logo.png";
+import { LOGO_URL } from "../utils/constants";
 
-const Header = ()=>{
+const Header = () => {
+  const onlineStatus = useOnlineStatus();
+  const [btnNameReact, setBtnNameReact] = useState("Login");
 
-    const onlineStatus = useOnlineStatus()
-  
-     const [btnNameReact,setBtnNameReact]=useState("Login")
+  const { loggedInUser } = useContext(UserContext);
+  const cartItems = useSelector((store) => store.cart.items);
 
-      const {loggedInUser}= useContext(UserContext);
-      console.log(loggedInUser);
+  return (
+    <header className="flex justify-between items-center bg-red-600 shadow-md px-6 py-3 sticky top-0 z-50">
+      {/* Logo */}
+      <div className="flex items-center">
+        <img className="w-28 rounded-lg" src={LOGO_URL} alt="App Logo" />
+      </div>
 
-      const cartItems = useSelector((store)=> store.cart.items);
-      console.log(cartItems);
-
-    return(
-        <div className="flex justify-between bg-red-600 shadow-lg m-2 ">
-            <div className="logo-container">
-                <img className="w-32 " src={LOGO_URL} alt="transparent"/>
-            </div>
-            <div className="flex items-center">
-                <ul className="flex text-lg text-white">
-                        <li className="px-5 ">Online Status: {onlineStatus ? "🟢" : "⚫"}</li>
-                    <li className="px-3"><Link to="/">Home🏠</Link></li> 
-                    <li className="px-3"><Link to="/about">About Us💁‍♂️</Link></li>
-                    <li className="px-3"><Link to="/contact">Contact Us📞</Link></li>
-                    <li className="px-3"><Link to="/grocery">Grocery🏪</Link></li>
-                    <li className="pl-3  font-bold"><Link to="/cart">Cart🛒 </Link></li>
-                    <li className="-mt-3 -ml-2 mr-1 font-bold">{cartItems.length}</li>
-                    </ul>
-                    <button className="bg-white rounded-lg  h-7 px-1 border border-solid border-black mx-5 text-lg" onClick={()=>{
-                       btnNameReact==="Login" ? setBtnNameReact("Logout") : setBtnNameReact("Login");
-                     
-                    }
-              
-                    }>{btnNameReact}✅</button>
-                    {/* <ul>   <li className="font-bold">{loggedInUser}</li></ul> */}
-                 
-                
-            </div>
-
-        </div>
-    )
-}
+      {/* Navigation */}
+      <nav>
+        <ul className="flex items-center text-white text-lg font-medium space-x-6">
+          <li>
+            Online Status: {onlineStatus ? "🟢" : "⚫"}
+          </li>
+          <li>
+            <Link to="/">Home 🏠</Link>
+          </li>
+          <li>
+            <Link to="/about">About Us 💁‍♂️</Link>
+          </li>
+          <li>
+            <Link to="/contact">Contact Us 📞</Link>
+          </li>
+          <li>
+            <Link to="/grocery">Grocery 🏪</Link>
+          </li>
+          <li className="relative">
+            <Link to="/cart" className="flex items-center">
+              Cart 🛒
+              {cartItems.length > 0 && (
+                <span className="absolute -top-2 -right-4 bg-white text-red-600 text-sm font-bold px-2 py-0.5 rounded-full shadow-md">
+                  {cartItems.length}
+                </span>
+              )}
+            </Link>
+          </li>
+          <li>
+            <button
+              className="bg-white text-red-600 font-semibold rounded-lg px-4 py-1 hover:bg-gray-100 transition"
+              onClick={() =>
+                setBtnNameReact((prev) => (prev === "Login" ? "Logout" : "Login"))
+              }
+            >
+              {btnNameReact} ✅
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </header>
+  );
+};
 
 export default Header;

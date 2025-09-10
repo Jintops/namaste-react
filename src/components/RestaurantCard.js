@@ -1,42 +1,53 @@
+import { useContext } from "react";
 import UserContext from "../utils/UserContext";
 import { CDN_URL } from "../utils/constants";
-import { useContext } from "react";
 
-const RestaurantCard =({resData}) =>{
-    
-    const {loggedInUser}=useContext(UserContext)
-    
-  
-    // let k = resData;
-    // const {cloudinaryImageId,name,cuisines,avgRating,costForTwo,deliveryTime}=resData.info
-    const {cloudinaryImageId,name,cuisines,avgRating,costForTwo,deliveryTime}= resData?.info ;
-    // const name = resData?.card?.card?.info?.name
-    // const cuisines = resData?.card?.card?.info?.cuisines
-    // const avgRating = resData?.card?.card?.info?.avgRating
-    // const costForTwo= resData?.card?.card?.info?.costForTwo
-    // const deliveryTime= resData?.card?.card?.info?.deliveryTime
-        return(
-            <div className="h-[300px] w-[230px] bg-gray-100  my-3  rounded-md transform transition-transform duration-300 hover:scale-105 shadow-md shadow-gray-400">
-            <div>
-              <img
-                className="rounded-lg w-[230px] h-[160px]"
-                alt="res-logo"
-                src={CDN_URL + cloudinaryImageId}
-              />
-            </div>
-            <div className="mx-2">
-              <h3 className="font-bold text-lg">{name}</h3>
-              <h4>{cuisines.join("-")}</h4>
-              </div>
-               <div className="flex">
-              <h4 className="font-bold">⭐{avgRating}</h4>
-              <h4 className="mx-1 font-bold">- {costForTwo}</h4>
-              {/* <h4>{deliveryTime} minutes</h4> */}
-            </div>
-          </div>
-          
-          
-    )
-}
+const RestaurantCard = ({ resData }) => {
+  const { loggedInUser } = useContext(UserContext);
+
+  // Destructure data safely
+  const {
+    cloudinaryImageId,
+    name,
+    cuisines,
+    avgRating,
+    costForTwo,
+    sla,
+  } = resData?.info || {};
+
+  return (
+    <div className="h-[320px] w-[240px] bg-white rounded-xl shadow-md hover:shadow-xl transform transition duration-300 hover:scale-105 overflow-hidden">
+      {/* Image */}
+      <img
+        className="w-full h-40 object-cover"
+        alt={name}
+        src={CDN_URL + cloudinaryImageId}
+      />
+
+      {/* Info */}
+      <div className="p-3 flex flex-col justify-between h-[160px]">
+        <h3 className="font-bold text-lg text-gray-800 truncate">{name}</h3>
+        <p className="text-sm text-gray-600 truncate">{cuisines?.join(", ")}</p>
+
+        <div className="flex justify-between items-center mt-2 text-sm">
+          <span
+            className={`font-semibold px-2 py-1 rounded ${
+              avgRating >= 4
+                ? "bg-green-100 text-green-700"
+                : "bg-yellow-100 text-yellow-700"
+            }`}
+          >
+            ⭐ {avgRating}
+          </span>
+          <span className="text-gray-700">{costForTwo}</span>
+        </div>
+
+        <p className="text-xs text-gray-500 mt-2">
+          ⏱ {sla?.deliveryTime || "30"} mins
+        </p>
+      </div>
+    </div>
+  );
+};
 
 export default RestaurantCard;
