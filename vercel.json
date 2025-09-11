@@ -1,0 +1,6 @@
+{
+  "buildCommand": "parcel build index.html",
+  "devCommand": "parcel index.html --port $PORT",
+  "installCommand": "npm install",
+  "outputDirectory": "dist"
+}
