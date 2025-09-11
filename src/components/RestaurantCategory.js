@@ -28,15 +28,9 @@ const RestaurantCategory = ({ data, showItems, setShowIndex }) => {
       {/* Items with smooth animation */}
       <AnimatePresence>
         {showItems && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="px-4 py-2 bg-gray-50"
-          >
+       
             <ItemList items={data.itemCards} />
-          </motion.div>
+        
         )}
       </AnimatePresence>
     </div>
