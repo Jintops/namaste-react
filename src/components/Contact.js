@@ -47,10 +47,10 @@ const Contact = () => {
             <strong>Email:</strong> support@foodieapp.com
           </p>
           <p className="text-gray-600 mb-2">
-            <strong>Phone:</strong> +91 98765 43210
+            <strong>Phone:</strong> +91 9526301688
           </p>
           <p className="text-gray-600">
-            <strong>Address:</strong> 123 Food Street, Kochi, Kerala
+            <strong>Address:</strong> 123 Food Street, kannur, Kerala
           </p>
         </div>
       </div>
